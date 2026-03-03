@@ -56,6 +56,12 @@ struct Client: Codable, Hashable {
     }
     
     func formatDateVersString() -> String {
-        return Date.stringFromDate(self.dateCreation) ?? self.dateCreationString
+        // On essaie de transformer la chaîne en date, puis la date en chaîne formatée
+        guard let date = Date.dateFromString(dateCreationString),
+              let formattedDate = Date.stringFromDate(date) else {
+            // Si l'une des étapes échoue, on renvoie la chaîne brute
+            return dateCreationString
+        }
+        return formattedDate
     }
 }
